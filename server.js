@@ -1,3 +1,4 @@
+
 const express=require('express')// Import the Express.js module
 const mongoose=require('mongoose')// Import the mongodb module
 //env file is used to protect database from hackers by using env we can hide the database link so that hackers cannot access it
@@ -48,6 +49,32 @@ catch(err){
     console.log(err)
 }
 })
+//createrecipe
+app.post('/create-recipe',async(req,res)=>{
+    // to post data to the db we need to use exception handling(try catch block) because here we are modifying the data
+    //creation of model or schema(table) in user.js file
+    
+    const{name,description,instruction,cooking_time}=req.body//inserting/testing the db
+    try{
+    //const hashedPassword= await bcrypt.hash(password,10)//to encrypt the password so that its not understandable this hash function is a part of bcrypt package and 10 time encrypt the password
+    //saving password in one of the variable
+    const value=new User({name,description,instruction,cooking_time})//store username and email as it is in db but in case of password only store hashed(encrypted) one
+    await value.save()
+    //to check if it stored successfully in db
+    res.json({message:"Recipe Created"})//shown in api tester if you want to display in json format but to use this you have to import middleware
+    console.log("Recipe Created successfully..")//shown in terminal
+    }
+    catch(err){
+        console.log(err)
+    }
+    })
+    //createrecipe table
+    mongoose.connect(process.env.SEC_URL).then(//env file used mongo_url is variable name i used
+        ()=>console.log("DB IS CONNECTED for sec table")
+    ).catch(
+        (err)=>console.log(err)
+    )
+    //user table
 mongoose.connect(process.env.MONGO_URL).then(//env file used mongo_url is variable name i used
     ()=>console.log("DB IS CONNECTED")
 ).catch(
